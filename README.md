@@ -166,10 +166,11 @@ void loop() {
 
 <br><br><br><br>
 # Analog Signals
-A digital signal is a type of signal that has only two discrete states: HIGH (1) or LOW (0). In Arduino, digital signals are used to communicate with components like LEDs, buttons, motors, and sensors, *however with limited control.*
+An analog signal is a continuous signal that varies over time and can take any value within a given range. Unlike digital signals that are either HIGH (1) or LOW (0), analog signals can have infinite possible values. Analog signals are able to use the same components as digital; LEDs, buttons, motors, and sensors, however with finer control.
 ![analog](images/analog.png)
 <br><br>
 
 ## Output
+
 
 ## Input
