@@ -25,7 +25,7 @@
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
     [ "esp:GND.2", "r1:2", "black", [ "v0" ] ],
     [ "led1:C", "r1:1", "black", [ "h28.8", "v-57.6" ] ],
-    [ "esp:19", "led1:A", "green", [ "h0" ] ]
+    [ "esp:19", "led1:A", "orange", [ "h0" ] ]
   ],
   "dependencies": {}
 }
