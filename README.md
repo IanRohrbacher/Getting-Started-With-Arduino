@@ -4,7 +4,7 @@ Arduino is an open-source electronics platform that makes it easy to create inte
 The following is a introduction to the basic skill you will need to know get started. There will be less emphasis on the electrical wiring but we will go over hardware and software.
 
 # Gettting Started
-We will use [wokwi](https://wokwi.com/) for simulation. Once you open it feel free to make a account if you want to save your work. We will be using the [ESP32](https://wokwi.com/esp32) environment. The ESP32 is currently one of the best microcontroler you can work with. Again we won't dive into the electronal aspect of the ESP32, but it is importent to know the (pinout sheet)[] of the board. This will tell you what the numbers are for your pins are and what the pins are able to do what. We don't have to worry too much however because most of the pins are pwm allowing easy converstion from analog to digital.
+We will use [wokwi](https://wokwi.com/) for simulation. We will be using the [ESP32](https://wokwi.com/esp32) environment. The ESP32 is currently one of the best microcontroler you can work with. Again we won't dive into the electronal aspect of the ESP32, but it is importent to know the (pinout sheet)[] of the board. This will tell you what the numbers are for your pins are and what the pins are able to do what. We don't have to worry too much however because most of the pins are pwm allowing easy converstion from analog to digital.
 
 # New Project
 After selecting the ESP32 simulator, scroll down untill you find 'Starter Templates' and select 'ESP32'. Welcom to your first project! Here you will see a few essentials; 'setup()', 'loop()', 'Serial', 'delay()'.
@@ -97,7 +97,7 @@ void loop() {
 ```
 
 ## Input
-Now that we Know how change the LED in code, lets add a button to control it insead. Open the diagram.json file in the simulator and copy [this json](digital/read-one.json). You should the circit with a LED now with a button.
+Now that we know how change the LED in code, lets add a button to control it insead. Open the diagram.json file in the simulator and copy [this json](digital/read-one.json). You should the circit with a LED now with a button.
 <br>
 Let us redifine the LED pin and add a button pin that is connected to pin 14. Let us also set the pinMode to the button to INPUT so we can read the state.
 ```ino
@@ -131,7 +131,6 @@ If you ran this you might have noticed something, the buttton inconsistently upd
   pinMode(Button_pin, INPUT_PULLUP);
 ```
 
-
 ### For Fun
 I have created a model that uses three LEDs that change one after eachother [here is the json](digital/digital-three).
 ```ino
@@ -143,6 +142,7 @@ int state = 0;
 
 void setup() {
   Serial.begin(115200);
+  while(!Serial){}
   Serial.println("Hello, ESP32!");
 
   for(int pins : pinList) {
@@ -171,6 +171,120 @@ An analog signal is a continuous signal that varies over time and can take any v
 <br><br>
 
 ## Output
+We will start once again with editing the diagram.json file, use [this json](analog/write-one.json). This diagram has a potentiometer in the form of a slide lever. A potentiometer is a variable resistor that allows you to adjust resistance manually. We can read this change as a integer inside the program. For a ESP32 the range of any potentiometers is 0-4095.
+<br>
+Running this program allows you to see the change in-real time.
+```ino
+int pot = 14;
 
+void setup() {
+  Serial.begin(115200);
+  while(!Serial){}
+  Serial.println("Hello, ESP32!");
+
+  pinMode(pot, INPUT);
+}
+
+void loop() {
+  int value = analogRead(pot);
+  Serial.println(value);
+
+  delay(100);
+}
+```
+Now lets change the output with one simple trick, map()! Using a map allows you to modify the input range and output range. The first parameter is your potentiometer, the second and third is the range of your potentiometer, 0-4095, and the fourth and five parameter is the new range.
+```ino
+void loop() {
+  int value = map(analogRead(pot), 0, 4095, 0, 100);
+  Serial.println(value);
+
+  delay(100);
+}
+```
 
 ## Input
+Now that we know how read the potentiometer, lets see how we can use it. Open the diagram.json file in the simulator and copy [this json](analog/read-one.json). You should the circit with teh potentiometer and now a LED.
+<br>
+Using the value from the potentiometer we can change how bright the LED is. We can use  analogWrite for this. The range for analogWrite is 0-255 so lets make sure the potentiometer matches.
+```ino
+int pot = 14;
+int LED = 19;
+
+void setup() {
+  Serial.begin(115200);
+  while(!Serial){}
+  Serial.println("Hello, ESP32!");
+  
+  pinMode(pot, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  int value = map(analogRead(pot), 0, 4095, 0, 255);
+  analogWrite(LED, value);
+  
+  Serial.println(value);
+  delay(100);
+}
+```
+
+### For Fun
+I have created a array of LEDs in the RGB colors along with a RGB LED. Potentiometer come in all styles too, so here I am using a nob. Each nob controls the brightness of their respective RGB colors and mixing them you can see how the RGB LED reacts. [Here is the json](analog/analog-RGB)
+```ino
+int RPin = 19;
+int GPin = 18;
+int BPin = 5;
+int ponRPin = 26;
+int ponGPin = 27;
+int ponBPin = 14;
+
+void anode(int R, int G, int B) {
+  analogWrite(RPin, map(R, 0, 4095, 0, 255));
+  analogWrite(GPin, map(G, 0, 4095, 0, 255));
+  analogWrite(BPin, map(B, 0, 4095, 0, 255));
+}
+
+void printRGB(int R, int G, int B) {
+  Serial.println("-------------------------------");
+  Serial.println("R:"+String(map(R, 0, 4095, 0, 255)));
+  Serial.println("G:"+String(map(G, 0, 4095, 0, 255)));
+  Serial.println("B:"+String(map(B, 0, 4095, 0, 255)));
+}
+
+void setup() {
+  Serial.begin(115200);
+  while(!Serial){}
+  Serial.println("Hello, ESP32!");
+
+  pinMode(ponRPin, INPUT);
+  pinMode(ponGPin, INPUT);
+  pinMode(ponBPin, INPUT);
+
+  pinMode(RPin, OUTPUT);
+  pinMode(GPin, OUTPUT);
+  pinMode(BPin, OUTPUT);
+}
+
+void loop() {
+  int red = analogRead(ponRPin);
+  int green = analogRead(ponGPin);
+  int blue = analogRead(ponBPin);
+
+  anode(red, green, blue);
+  printRGB(red, green, blue);
+
+  delay(100);
+}
+```
+
+## Servos
+Another basic componet are servos. They are a type of motor that allows for precise control of angular position, speed, and torque. The unige thing about servos are that they can hold a position rather than continuously rotating.
+<br>
+ [Diagram here](servo/servo-one).
+
+
+
+
+
+
+
