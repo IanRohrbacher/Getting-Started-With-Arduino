@@ -277,12 +277,86 @@ void loop() {
 }
 ```
 
+# Components
+Arduino can interface with various external components like sensors, motors, displays, and more. These components communicate through different methods such as digital I/O, analog inputs, PWM, I2C, SPI, and UART. You can see on the [pinout sheet](images/ESP32-Pinout.png) of the ESP32 how the pins are defined. We will go over servos and one display board.
+
+
+
 ## Servos
-Another basic componet are servos. They are a type of motor that allows for precise control of angular position, speed, and torque. The unige thing about servos are that they can hold a position rather than continuously rotating.
+Servos are a type of motor that allows for precise control of angular position, speed, and torque. The unige thing about servos are that they can hold a position rather than continuously rotating.
 <br>
- [Diagram here](servo/servo-one).
+Using our knowlage of analog inputs, we will read from a potentiometer to move a servo. lets use the new [Diagram here](servo/servo-one) and this code as a start.
+```ino
+int pot = 14;
 
+void setup() {
+  Serial.begin(115200);
+  while(!Serial){}
+  Serial.println("Hello, ESP32!");
+  
+  pinMode(pot, INPUT);
+}
 
+void loop() {
+  int value = analogRead(pot);
+  
+  Serial.println(value);
+  delay(100);
+}
+```
+
+In arduino a servo is its own class. To use this class we need to import ESP32Servo.h, open the 'Library Manager' and add 'ESP32Servo'. Next in code we need to include ESP32Servo.h. Now we can create a servo object and add give it a pin to read from.
+```ino
+#include <ESP32Servo.h>
+
+int pot = 14;
+const int servoPin = 5;
+
+Servo servo;
+
+void setup() {
+  Serial.begin(115200);
+  while(!Serial){}
+  Serial.println("Hello, ESP32!");
+  
+  pinMode(pot, INPUT);
+  servo.attach(servoPin);
+}
+```
+
+This servo can only hold 0-180 degrees so we will use a map to change the output of the potentiometer to match. Writing to the servo is easy, just call the write methood from the object passing the potentiometer's changed value.
+```ino
+void loop() {
+  int value = map(analogRead(pot), 0, 4095, 0, 180);
+  servo.write(value);
+  
+  Serial.println(value);
+  delay(100);
+}
+```
+
+There you have it, now you can change the postion of the servo using the potentiometer as a input.
+
+## Display
+We have been using the serial ports to read data. And if you remember, you need the microcontroller to be plugged into your computer to read that data. Now what if we didn't want to to be plugged into? This is where onboard displays come in.
+<br>
+Just like servos we need to import the libary Adafruit SSD1306. Unlike the servo, it matters which pins you use. We need to look at both the [ESP32](images/ESP32-Pinout.png) and the [OLED display](images/I2C-OLED-Display-Pinout.png) pinout sheet. We need to match the SCL and SDA pins. There are pin 22 and pin 21 respectfuly. The full diagram can be found [here](display/display-one)
+<br>
+Just like the servo we need to include Adafruit_SSD1306.h. Next create a Adafruit_SSD1306 object with the prameters screen width and screen height. In setup we start the display, apply styles, and clear the display.
+```ino
+#include <Adafruit_SSD1306.h>
+
+Adafruit_SSD1306 display(128, 64);
+
+void setup() {
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.setTextColor(WHITE);
+  display.setTextSize(1);
+  display.clearDisplay();
+}
+```
+
+To print to the display there are many functions in the Adafruit_SSD1306 class, but we will focase on text. To chose the origin of the text we can move it using setCursor and print to the screen wex use .print() like any other print methood. The last thing you need to do is call .display().
 
 
 
