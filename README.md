@@ -132,7 +132,7 @@ If you ran this you might have noticed something, the buttton inconsistently upd
 ```
 
 ### For Fun
-I have created a model that uses three LEDs that change one after eachother [here is the json](digital/digital-three).
+I have created a model that uses three LEDs that change one after eachother [here is the json](digital/digital-three.json).
 ```ino
 int pinR = 18;
 int pinG = 5;
@@ -229,7 +229,7 @@ void loop() {
 ```
 
 ### For Fun
-I have created a array of LEDs in the RGB colors along with a RGB LED. Potentiometer come in all styles too, so here I am using a nob. Each nob controls the brightness of their respective RGB colors and mixing them you can see how the RGB LED reacts. [Here is the json](analog/analog-RGB)
+I have created a array of LEDs in the RGB colors along with a RGB LED. Potentiometer come in all styles too, so here I am using a nob. Each nob controls the brightness of their respective RGB colors and mixing them you can see how the RGB LED reacts. [Here is the json](analog/analog-RGB.json)
 ```ino
 int RPin = 19;
 int GPin = 18;
@@ -285,7 +285,7 @@ Arduino can interface with various external components like sensors, motors, dis
 ## Servos
 Servos are a type of motor that allows for precise control of angular position, speed, and torque. The unige thing about servos are that they can hold a position rather than continuously rotating.
 <br>
-Using our knowlage of analog inputs, we will read from a potentiometer to move a servo. lets use the new [Diagram here](servo/servo-one) and this code as a start.
+Using our knowlage of analog inputs, we will read from a potentiometer to move a servo. lets use the new [Diagram here](servo/servo-one.json) and this code as a start.
 ```ino
 int pot = 14;
 
@@ -340,7 +340,7 @@ There you have it, now you can change the postion of the servo using the potenti
 ## Display
 We have been using the serial ports to read data. And if you remember, you need the microcontroller to be plugged into your computer to read that data. Now what if we didn't want to to be plugged into? This is where onboard displays come in.
 <br>
-Just like servos we need to import the libary Adafruit SSD1306. Unlike the servo, it matters which pins you use. We need to look at both the [ESP32](images/ESP32-Pinout.png) and the [OLED display](images/I2C-OLED-Display-Pinout.png) pinout sheet. We need to match the SCL and SDA pins. There are pin 22 and pin 21 respectfuly. The full diagram can be found [here](display/display-one)
+Just like servos we need to import the libary Adafruit SSD1306. Unlike the servo, it matters which pins you use. We need to look at both the [ESP32](images/ESP32-Pinout.png) and the [OLED display](images/I2C-OLED-Display-Pinout.png) pinout sheet. We need to match the SCL and SDA pins. There are pin 22 and pin 21 respectfuly. The full diagram can be found [here](display/display-one.json)
 <br>
 Just like the servo we need to include Adafruit_SSD1306.h. Next create a Adafruit_SSD1306 object with the prameters screen width and screen height. In setup we start the display, apply styles, and clear the display.
 ```ino
@@ -369,7 +369,7 @@ void setup() {
 ```
 
 ### For Fun
-Using the slide potentiometer as a input, I have made it print custom text depending on how much the potentiometer has moved. [Diagram here](servo/servo-one)
+Using the slide potentiometer as a input, I have made it print custom text depending on how much the potentiometer has moved. [Diagram here](servo/servo-one.json)
 
 ```ino
 #include <Adafruit_SSD1306.h>
