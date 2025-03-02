@@ -356,9 +356,77 @@ void setup() {
 }
 ```
 
-To print to the display there are many functions in the Adafruit_SSD1306 class, but we will focase on text. To chose the origin of the text we can move it using setCursor and print to the screen wex use .print() like any other print methood. The last thing you need to do is call .display().
+To use the display there are many functions in the Adafruit_SSD1306 class, but we will focase on text. To chose the origin of the text we can move it using setCursor and print to the screen wex use .print() like any other print methood. The last thing you need to do is call .display(). The OLED display does not update automatically when you draw text or shapes. Instead, you are writing to a buffer inside the microcontroller. The function .display() sends the buffer contents to the actual screen.
 
+```ino
+void setup() {
+  ...
 
+  display.setCursor(0,5);
+  display.print("Hello World!");
+  display.display();
+}
+```
 
+### For Fun
+Using the slide potentiometer as a input, I have made it print custom text depending on how much the potentiometer has moved. [Diagram here](servo/servo-one)
 
+```ino
+#include <Adafruit_SSD1306.h>
+
+Adafruit_SSD1306 display(128, 64);
+
+int pot = 14;
+
+void printSwitch();
+
+void setup() {
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.setTextColor(WHITE);
+  display.setTextSize(1);
+  display.clearDisplay();
+  
+  pinMode(pot, INPUT);
+}
+
+void loop() {
+  printSwitch(map(analogRead(pot), 0, 4095, 0, 5));
+
+  delay(100);
+}
+
+void printSwitch(int value) {
+  display.clearDisplay();
+  display.setCursor(0,15);
+
+  switch(value) {
+    case 0:
+      display.print("I love switches");
+      break;
+
+    case 1:
+      display.print("Who needs ifs");
+      break;
+
+    case 2:
+      display.print("FRC > Vex");
+      break;
+
+    case 3:
+      display.print("IDK... Something");
+      break;
+
+    case 4:
+      display.print("Thanks for watching");
+      break;
+
+    case 5:
+      display.print("This is the end");
+      break;
+
+  }
+
+  display.display();
+}
+```
 
