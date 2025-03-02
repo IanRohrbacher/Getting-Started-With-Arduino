@@ -35,7 +35,7 @@ A digital signal is a type of signal that has only two discrete states: HIGH (1)
 <br><br>
 
 ## Output
-To start, open the diagram.json file in the simulator and copy [this json](digital/write-one.json). You should see a circuit with an LED. Let's learn how to control this LED.
+To start, open the diagram.json file in the simulator and copy [this JSON](digital/write-one.json). You should see a circuit with an LED. Let's learn how to control this LED.
 <br>
 Let's first define a variable for the pin, it is currently connected to pin 19.
 ```ino
@@ -171,7 +171,7 @@ An analog signal is a continuous signal that varies over time and can take any v
 <br><br>
 
 ## Output
-We will start once again with editing the diagram.json file, using [this json](analog/write-one.json). This diagram has a potentiometer in the form of a slide lever. A potentiometer is a variable resistor that allows you to adjust resistance manually. We can read this change as an integer inside the program. For an ESP32 the range of any potentiometers is 0-4095.
+We will start once again with editing the diagram.json file, using [this JSON](analog/write-one.json). This diagram has a potentiometer in the form of a slide lever. A potentiometer is a variable resistor that allows you to adjust resistance manually. We can read this change as an integer inside the program. For an ESP32 the range of any potentiometers is 0-4095.
 <br>
 Running this program allows you to see the change in real-time.
 ```ino
@@ -229,7 +229,7 @@ void loop() {
 ```
 
 ### For Fun
-I have created an array of LEDs in the RGB colors along with a RGB LED. Potentiometers come in all styles too, so here I am using a nob. Each nob controls the brightness of their respective RGB colors and by mixing them you can see how the RGB LED reacts. [Here is the json](analog/analog-RGB.json)
+I have created an array of LEDs in the RGB colors along with a RGB LED. Potentiometers come in all styles too, so here I am using a nob. Each nob controls the brightness of their respective RGB colors and by mixing them you can see how the RGB LED reacts. [Here is the JSON](analog/analog-RGB.json)
 ```ino
 int RPin = 19;
 int GPin = 18;
