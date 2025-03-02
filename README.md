@@ -285,7 +285,7 @@ Arduino can interface with various external components like sensors, motors, dis
 ## Servos
 Servos are a type of motor that allows for precise control of angular position, speed, and torque. The unique thing about servos is that they can hold a position rather than continuously rotating.
 <br>
-Using our knowledge of analog inputs, we will read from a potentiometer to move a servo. lets use the new [Diagram here](servo/servo-one.json) and this code as a start.
+Using our knowledge of analog inputs, we will read from a potentiometer to move a servo. lets use the new [diagram here](servo/servo-one.json) and this code as a start.
 ```ino
 int pot = 14;
 
