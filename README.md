@@ -4,7 +4,7 @@ Arduino is an open-source electronics platform that makes it easy to create inte
 The following is an introduction to the basic skills you will need to know to get started. We will place less emphasis on electrical wiring and more on hardware and software.
 
 # Gettting Started
-We will use [wokwi](https://wokwi.com/) for simulation. We will be using the [ESP32](https://wokwi.com/esp32) environment. The ESP32 is currently one of the best microcontrollers you can work with. Again we won't dive into the electrical aspect of the ESP32, but it is important to know the (pinout sheet)[images/ESP32-Pinout.png] of the board. This will tell you what the numbers for your pins are and what the pins can do. We don't have to worry too much however because most of the pins are PWM allowing easy conversion from analog to digital.
+We will use [wokwi](https://wokwi.com/) for simulation. We will be using the [ESP32](https://wokwi.com/esp32) environment. The ESP32 is currently one of the best microcontrollers you can work with. Again we won't dive into the electrical aspect of the ESP32, but it is important to know the [pinout sheet](images/ESP32-Pinout.png) of the board. This will tell you what the numbers for your pins are and what the pins can do. We don't have to worry too much however because most of the pins are PWM allowing easy conversion from analog to digital.
 
 # New Project
 After selecting the ESP32 simulator, scroll down until you find 'Starter Templates' and select 'ESP32'. Welcome to your first project! Here you will see a few essentials; 'setup()', 'loop()', 'Serial', 'delay()'.
