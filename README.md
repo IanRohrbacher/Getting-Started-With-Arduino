@@ -1,5 +1,5 @@
 # Contents
-> Created by Ian Rohrbacher for HacKSU
+> This is a demo created by Ian Rohrbacher for HacKSU at Kent State University
 
 * [Gettting Started](#gettting-started)
 * [Digital Signals](#digital-signals)
