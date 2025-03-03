@@ -1,3 +1,17 @@
+# Contents
+> Created by Ian Rohrbacher for HacKSU
+
+* [Gettting Started](#gettting-started)
+* [Digital Signals](#digital-signals)
+  * [Input](#input)
+  * [Output](#output)
+* [Analog Signals](#analog-signals)
+  * [Input](#input-1)
+  * [Output](#output-1)
+* [Components](#components)
+  * [Servos](#servos)
+  * [Display](#display)
+
 # Lessons on Arduino
 Arduino is an open-source electronics platform that makes it easy to create interactive projects. In the Arduino IDE, you can control LEDs, motors, and sensors using C++, *with just a few tiny differences*. It's widely used for prototyping and robotics, making it a great tool for anyone to use.
 <br><br>
