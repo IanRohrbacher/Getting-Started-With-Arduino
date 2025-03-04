@@ -208,12 +208,7 @@ void loop() {
 ```
 Now let's change the output with one simple trick, map()! Using a map allows you to modify the input range and output range. The first parameter is your potentiometer, the second and third are the range of your potentiometer, 0-4095, and the fourth and fifth parameters are the new range.
 ```ino
-void loop() {
   int value = map(analogRead(pot), 0, 4095, 0, 100);
-  Serial.println(value);
-
-  delay(100);
-}
 ```
 
 ## Input
