@@ -349,7 +349,7 @@ There you have it, now you can change the position of the servo using the potent
 ## Display
 We have been using the serial ports to read data. And if you remember, you need the microcontroller to be plugged into your computer to read that data. Now what if we didn't want to be plugged in? This is where onboard displays come in.
 <br>
-Just like servos, we need to import the library Adafruit SSD1306. Unlike the servo, it matters which pins you use. We need to look at both the [ESP32](images/ESP32-Pinout.png) and the [OLED display](images/I2C-OLED-Display-Pinout.png) pinout sheet. We need to match the SCL and SDA pins. There are pin 22 and pin 21 respectively. The full diagram can be found [here](display/display-one.json)
+Just like servos, we need to import the library 'Adafruit SSD1306'. Unlike the servo, it matters which pins you use. We need to look at both the [ESP32](images/ESP32-Pinout.png) and the [OLED display](images/I2C-OLED-Display-Pinout.png) pinout sheet. We need to match the SCL and SDA pins. There are pin 22 and pin 21 respectively. The full diagram can be found [here](display/display-one.json)
 <br>
 Just like the servo, we need to include Adafruit_SSD1306.h. Next, create an Adafruit_SSD1306 object with the parameters screen width and screen height. In setup, we start the display, apply styles, and clear the display.
 ```ino
@@ -378,7 +378,7 @@ void setup() {
 ```
 
 ### For Fun
-Using the slide potentiometer as an input, I have made it print custom text depending on how much the potentiometer has moved. [Diagram here](servo/servo-one.json)
+Using the slide potentiometer as an input, I have made it print custom text depending on how much the potentiometer has moved. [Diagram here](display/display-many.json)
 
 ```ino
 #include <Adafruit_SSD1306.h>
