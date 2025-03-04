@@ -185,36 +185,35 @@ An analog signal is a continuous signal that varies over time and can take any v
 <br><br>
 
 ## Output
-We will start once again with editing the diagram.json file, using [this JSON](analog/write-one.json). This diagram has a potentiometer in the form of a slide lever. A potentiometer is a variable resistor that allows you to adjust resistance manually. We can read this change as an integer inside the program. For an ESP32 the range of any potentiometers is 0-4095.
+We will start once again with editing the diagram.json file. We will reuse the digital output diagram, however with a purple LED [JSON](analog/write-one.json). 
 <br>
-Running this program allows you to see the change in real-time.
+We will make a small modification from the digital output code.
 ```ino
-int pot = 14;
+int pin = 19;
+int value = 0;
 
 void setup() {
   Serial.begin(115200);
   while(!Serial){}
   Serial.println("Hello, ESP32!");
 
-  pinMode(pot, INPUT);
+  pinMode(pin, OUTPUT);
 }
 
 void loop() {
-  int value = analogRead(pot);
+  value = value>255 ? 0 : value+10;
+  analogWrite(pin, value);
   Serial.println(value);
 
-  delay(100);
+  delay(500);
 }
 ```
-Now let's change the output with one simple trick, map()! Using a map allows you to modify the input range and output range. The first parameter is your potentiometer, the second and third are the range of your potentiometer, 0-4095, and the fourth and fifth parameters are the new range.
-```ino
-  int value = map(analogRead(pot), 0, 4095, 0, 100);
-```
+Now instead of the LED turing on and off, it slowly climbs in brightness and resets after passing 255. 0-255 is the range of analogWrite which is why it will reset after 255.
 
 ## Input
-Now that we know how to read the potentiometer, let's see how we can use it. Open the diagram.json file in the simulator and copy [this JSON](analog/read-one.json). You should see the circuit with the potentiometer and now an LED.
+Now that we saw the LED changing brightness, let's see how we can manually alter it. Open the diagram.json file in the simulator and copy [this JSON](analog/read-one.json). You should see the circuit we had befor with the potentiometer.
 <br>
-Using the value from the potentiometer we can change how bright the LED is. We can use analogWrite for this. The range for analogWrite is 0-255 so let's make sure the potentiometer matches.
+Similarly to the button, a potentiometer gives us a input. Unlike a button, where it has two states, a potentiometer has infinitely many states. For a ESP32 this is measure as a range from 0-4095. If we wanted to change that range for the LED to work properly, we can use a built in function 'map'. map allows us to alter any range as another, for our case 0-4095 to 0-255.
 ```ino
 int pot = 14;
 int LED = 19;
@@ -236,6 +235,7 @@ void loop() {
   delay(100);
 }
 ```
+If you are using map make sure you know the range of the orignal input, as having a difference can lead to unreliable outputs.
 
 ### For Fun
 I have created an array of LEDs in the RGB colors along with a RGB LED. Potentiometers come in all styles too, so here I am using a nob. Each nob controls the brightness of their respective RGB colors and by mixing them you can see how the RGB LED reacts. [Here is the JSON](analog/analog-RGB.json)
