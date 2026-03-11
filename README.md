@@ -18,7 +18,7 @@ Arduino is an open-source electronics platform that makes it easy to create inte
 The following is an introduction to the basic skills you will need to know to get started. We will place less emphasis on electrical wiring and more on hardware and software.
 
 # Gettting Started
-We will use [wokwi](https://wokwi.com/) for simulation. We will be using the [ESP32](https://wokwi.com/esp32) environment. The ESP32 is currently one of the best microcontrollers you can work with. Again we won't dive into the electrical aspect of the ESP32, but it is important to know the [pinout sheet](images/ESP32-Pinout.png) of the board. This will tell you what the numbers for your pins are and what the pins can do. We don't have to worry too much however because most of the pins are PWM allowing easy conversion from analog to digital.
+We will use [wokwi](https://wokwi.com/) for simulation. We will be using the [ESP32](https://wokwi.com/esp32) environment. The ESP32 is currently one of the best microcontrollers you can work with. Again we won't dive into the electrical aspect of the ESP32, but it is important to know the [pinout sheet](images/ESP32-Pinout.png) of the board. This will tell you what the numbers for your pins are and what the pins can do. On ESP32, many pins can generate PWM outputs, while ADC-capable pins are used for analog-to-digital input readings.
 
 # New Project
 After selecting the ESP32 simulator, scroll down until you find 'Starter Templates' and select 'ESP32'. Welcome to your first project! Here you will see a few essentials; 'setup()', 'loop()', 'Serial', 'delay()'.
@@ -26,7 +26,7 @@ After selecting the ESP32 simulator, scroll down until you find 'Starter Templat
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200); // starts a serial connection
-  while(!Serial){} // wait until Serial is created
+  while(!Serial){} // optional on many ESP32 setups, useful on some USB serial setups
   Serial.println("Hello, ESP32!"); // prints to the serial
 }
 
@@ -39,12 +39,13 @@ void loop() {
 * loop(): Runs continuously while active. Here is where all executing logic goes.
 * Serial: Used as an output stream.
 > [!IMPORTANT] 
-> Always check your microcontroller for which port number to use, standard is 9600 however the simulator uses 115200. 
+> Always make sure the baud rate in your code matches your Serial Monitor. 9600 and 115200 are both common choices, and this simulator template uses 115200.
 * delay(): This is your 'wait' statement. This is used to limit the amount of cycles the 'loop()' will make to ensure memory isn't being wasted.
 
 <br><br><br><br>
 # Digital Signals
 A digital signal is a type of signal that has only two discrete states: HIGH (1) or LOW (0). In Arduino, digital signals are used to communicate with components like LEDs, buttons, motors, and sensors, *however with limited control.*
+<br>
 ![digital](images/digital.png)
 <br><br>
 
@@ -127,7 +128,7 @@ void setup() {
   pinMode(Button_pin, INPUT);
 }
 ```
-To read from the button we use digitalRead. This will return the state of the button, HIGH or LOW. Now let us modify our logic from before and have digitalRead cast to a boolean.
+To read from the button we use digitalRead. This will return the state of the button, HIGH or LOW. Now let us modify our logic from beforee and have digitalRead cast to a boolean.
 ```ino
 void loop() {
   bool pressed = digitalRead(Button_pin);
@@ -140,7 +141,7 @@ void loop() {
 ```
 As you can see the digitalRead and digitalWrite are now inside the loop() allowing it to update every tick, defined by the delay.
 <br>
-If you ran this you might have noticed something, the button inconsistently updates the LED. This is due to the microcontroller flowing unsteady electricity through the button. We can fix this by changing the INPUT to INPUT_PULLUP which will ensure a HIGH stream of electricity to flow.
+If you ran this you might have noticed something, the button inconsistently updates the LED. This usually happens because the input pin is floating when the button is not pressed. We can fix this by changing INPUT to INPUT_PULLUP, which enables the internal pull-up resistor so the pin has a stable default HIGH state.
 ```ino
   pinMode(Button_pin, INPUT_PULLUP);
 ```
@@ -181,6 +182,7 @@ void loop() {
 <br><br><br><br>
 # Analog Signals
 An analog signal is a continuous signal that varies over time and can take any value within a given range. Unlike digital signals that are either HIGH (1) or LOW (0), analog signals can have infinite possible values. Analog signals are able to use the same components as digital; LEDs, buttons, motors, and sensors, however with finer control.
+<br>
 ![analog](images/analog.png)
 <br><br>
 
@@ -208,12 +210,12 @@ void loop() {
   delay(500);
 }
 ```
-Now instead of the LED turing on and off, it slowly climbs in brightness and resets after passing 255. 0-255 is the range of analogWrite which is why it will reset after 255.
+Now instead of the LED turing on and off, it slowly climbs in brightness and resets after passing 255. By default, analogWrite uses a range of 0-255, which is why it resets after 255.
 
 ## Input
-Now that we saw the LED changing brightness, let's see how we can manually alter it. Open the diagram.json file in the simulator and copy [this JSON](analog/read-one.json). You should see the circuit we had befor with the potentiometer.
+Now that we saw the LED changing brightness, let's see how we can manually alter it. Open the diagram.json file in the simulator and copy [this JSON](analog/read-one.json). You should see the circuit we had before with the potentiometer.
 <br>
-Similarly to the button, a potentiometer gives us a input. Unlike a button, where it has two states, a potentiometer has infinitely many states. For a ESP32 this is measure as a range from 0-4095. If we wanted to change that range for the LED to work properly, we can use a built in function 'map'. map allows us to alter any range as another, for our case 0-4095 to 0-255.
+Similarly to the button, a potentiometer gives us a input. Unlike a button, where it has two states, a potentiometer changes continuously. On ESP32, that continuous value is sampled by the ADC and returned as a number (typically 0-4095 by default). If we wanted to change that range for the LED to work properly, we can use a built in function 'map'. map allows us to alter any range as another, for our case 0-4095 to 0-255.
 ```ino
 int pot = 14;
 int LED = 19;
@@ -349,7 +351,7 @@ There you have it, now you can change the position of the servo using the potent
 ## Display
 We have been using the serial ports to read data. And if you remember, you need the microcontroller to be plugged into your computer to read that data. Now what if we didn't want to be plugged in? This is where onboard displays come in.
 <br>
-Just like servos, we need to import the library 'Adafruit SSD1306'. Unlike the servo, it matters which pins you use. We need to look at both the [ESP32](images/ESP32-Pinout.png) and the [OLED display](images/I2C-OLED-Display-Pinout.png) pinout sheet. We need to match the SCL and SDA pins. There are pin 22 and pin 21 respectively. The full diagram can be found [here](display/display-one.json)
+Just like servos, we need to import the library 'Adafruit SSD1306'. Unlike the servo, it matters which pins you use. We need to look at both the [ESP32](images/ESP32-Pinout.png) and the [OLED display](images/I2C-OLED-Display-Pinout.png) pinout sheet. We need to match the SCL and SDA pins. On many ESP32 dev boards these are pin 22 and pin 21 respectively, but always verify for your specific board. The full diagram can be found [here](display/display-one.json)
 <br>
 Just like the servo, we need to include Adafruit_SSD1306.h. Next, create an Adafruit_SSD1306 object with the parameters screen width and screen height. In setup, we start the display, apply styles, and clear the display.
 ```ino
